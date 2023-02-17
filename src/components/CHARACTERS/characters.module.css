@@ -1,0 +1,15 @@
+.componentes{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+   
+    border: 1 em;
+    padding: 1 em;
+    justify-content: center;
+    border: solid 2px transparent;
+}
+.title {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}

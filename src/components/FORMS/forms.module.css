@@ -1,0 +1,9 @@
+.bloque {
+    background-color: azure;
+    border-color: antiquewhite;
+    width: 16em;
+    height: 6em;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}

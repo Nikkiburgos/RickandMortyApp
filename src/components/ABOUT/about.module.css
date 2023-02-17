@@ -1,0 +1,16 @@
+.background{
+    background-color: white
+}
+.title{
+    font-weight: 500;
+    font-size: 3em;
+    color:rgb(62, 176, 62); 
+
+}
+.text{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+    padding: .5 em;
+    margin-left: 5em;
+    margin-right: 5em;
+}

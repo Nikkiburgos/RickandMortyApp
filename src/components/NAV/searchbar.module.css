@@ -1,0 +1,31 @@
+.searchbar{
+  background: linear-gradient(to right, black, #39FF14);
+    padding:1em;
+    margin:2px 0;
+    position:relative;
+
+    -moz-border-radius:16px;
+    -webkit-border-radius:16px;
+    border-radius:16px;
+}
+
+.inputbar{
+  height: 2em;
+  
+}
+
+.buttonbar{
+  margin-left: 1em;
+  color: rgb(57, 72, 72);
+  border-radius: 10%;
+  border-color: transparent;
+  height: 2em;
+  width: 7em;
+  cursor: pointer
+}
+
+.botones{
+  color: rgb(238, 241, 241);
+  margin-left: 2em ;
+   
+}
