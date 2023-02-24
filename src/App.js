@@ -1,67 +1,95 @@
-import './App.css';
-import {Route, Routes, useNavigate, useLocation} from 'react-router-dom'
-import { useState } from 'react';
-import Characters from './components/CHARACTERS/characters';
-import Landing from './components/LANDING/landing';
-import CharacterDetail from './components/DETAIL_CHARACTER/CharacterDetail';
-import About from './components/ABOUT/about'
-import Nav from './components/NAV/nav'
-import Forms from './components/FORMS/forms'
+import './App.css'
+import React from 'react'
+import Cards from './components/Cards/Cards.jsx'
+import styles from './components/Home/Title.module.css'
+import Nav from './components/Nav/Nav'
+import style from './components/Home/Bienvenido.module.css'
+import {useState, useEffect} from 'react'
+import {Routes, Route} from 'react-router-dom'
+import About from './components/About/About'
+import Detail from './components/Detail/Detail'
+import {useLocation, useNavigate} from 'react-router-dom'
+import Form from './components/Form/Form';
+import Favorites from './components/Favorites/Favorites'
 
 
 
+function App () {
+  const [characters,setCharacters] = useState([])
+  const location= useLocation();
+  const navigate = useNavigate();
+  const [access, setAccess] = useState(false);
 
 
-function App() {
+  const username= "nburgosvega@gmail.com";
+  const password= "123asd";
 
-  const location = useLocation();
+  const login =(userData)  => {
+    if(userData.username === username && userData.password === password){
+      setAccess(true)
+      navigate("/home");
+    }
+}
 
-  const [characters, setCharacters]= useState([]);
+useEffect(() => {
+!access && navigate('/')
+}, [access])
 
-  function onSearch(character) {
-    fetch (`https://rickandmortyapi.com/api/character/${character}`)
-       .then((response) => response.json())
-       .then((data) => {
-          if (data.name) {
-             const alreadyExists = characters.some(char => char.id === data.id);
-             if (!alreadyExists) {
-                setCharacters((oldChars) => [...oldChars, data]);
-             } else {
-                window.alert(`El personaje ${data.name} ya ha sido agregado`);
-             }
-          } else {
-             window.alert('No hay personajes con ese ID');
-          }
-       });
-  }
-  
-  function onClose (id){
+
+
+//   function onSearch(character) {
+//     fetch(`https://localhosto:3001/rickandmorty/character/${character}`)
+//        .then((response) => response.json())
+//        .then((data) => {
+//           if (data.name) {
+//              const alreadyExists = characters.some(char => char.id === data.id);
+//              if (!alreadyExists) {
+//                 setCharacters((oldChars) => [...oldChars, data]);
+//              } else {
+//                 window.alert(`El personaje "${data.name}" ya ha sido agregado`);
+//              }
+//           } else {
+//              window.alert('No hay personajes con ese ID');
+//           }
+//        });
+//  }
+
+function onSearch(character) {
+   fetch(`http://localhost:3001/rickandmorty/character/${character}`)
+     .then((response) => response.json())
+     .then((data) => {
+       
+         const alreadyExists = characters.some((char) => char.id === data.id);
+         if (!alreadyExists) {
+           setCharacters((oldChars) => [...oldChars, data]);
+         } else {
+           window.alert(`El personaje ${data.name} ya ha sido agregado.`);
+         }
+       
+     })
+     .catch((error) => {
+       console.error(error);
+       window.alert("Hubo un error al buscar el personaje.");
+     });
+ }
+
+ function onClose (id) {
   setCharacters (characters.filter(personaje => personaje.id !== id))
   }
 
-
   return (
-    <div className="App">
-
-     {location.pathname === "/home" ? <Landing/> : <Nav onSearch={onSearch}/>} 
+   <div className={style.Bienvenido}>
+      <h1 className={styles.title}>RICK & MORTY</h1>
+      {location.pathname === '/' ? <Form login={login}/> : <Nav onSearch={onSearch}/>}
       
-      
-
-    <Routes>
-      {/* <Route  path ='/home'  element={<Landing/>}/> */}
-     
-      <Route exact path='/characters' element={<Characters/>}/> 
-      <Route path='/detail/:id' element ={<CharacterDetail />} />
-      <Route path='/about' element= {<About/>} />
-      <Route path= '/forms' element= {<Forms/>} />
-    
-
-    </Routes>
-
-
-
+      <Routes>
+         <Route path= "/home" element={<Cards characters={characters} onClose={onClose}/>}/>
+         <Route path= "/about" element={<About />}/>
+         <Route path= "/detail/:id" element={<Detail/>}/>
+         <Route path= "/favorites" element={<Favorites/>}/>
+      </Routes>
     </div>
-  );
+  )
 }
 
 export default App;
